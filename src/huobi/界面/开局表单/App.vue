@@ -72,6 +72,32 @@
       <input v-model="identity" class="input" type="text" :placeholder="identity_placeholder" />
     </section>
 
+    <section v-if="is_male" class="field">
+      <div class="field-label">精液等级</div>
+      <div class="chips">
+        <button
+          v-for="item in GRADES"
+          :key="item"
+          type="button"
+          class="chip"
+          :class="{ picked: semen_grade === item }"
+          @click="semen_grade = item"
+        >
+          {{ item }}
+        </button>
+      </div>
+    </section>
+
+    <section class="field">
+      <div class="field-label">{{ stock_label }}</div>
+      <input v-model.number="body_stock" class="input" type="number" min="0" step="1" />
+    </section>
+
+    <section class="field">
+      <div class="field-label">精元余额（Ṥ）</div>
+      <input v-model.number="coin_balance" class="input" type="number" min="0" step="1" />
+    </section>
+
     <section class="field">
       <div class="field-label">起始日期</div>
       <input v-model="start_date" class="input" type="date" />
@@ -233,6 +259,9 @@ const orientation = ref('异');
 const kinks = ref<string[]>([]);
 const pen = ref('感官情绪向');
 const grade = ref('D');
+const semen_grade = ref('D');
+const body_stock = ref(0);
+const coin_balance = ref(0);
 const start_date = ref('2026-09-23');
 const start_time = ref('09:00');
 const submitting = ref(false);
@@ -243,6 +272,8 @@ const identity_placeholder = computed(() =>
 );
 const ready = computed(() => Boolean(world.value && gender.value && identity.value.trim()));
 const grade_label = computed(() => (gender.value === '男' ? '阴茎等级' : '骚穴等级'));
+const is_male = computed(() => gender.value === '男');
+const stock_label = computed(() => (is_male.value ? '精能值（ml）' : '子宫仓余额（ml）'));
 
 watch(world, () => {
   if (!identity_presets.value.includes(identity.value)) {
@@ -264,6 +295,9 @@ function buildSummary() {
     '【开局配置】',
     `世界方向：${world.value}`,
     `性别：${gender.value}`,
+    is_male.value ? `精液等级：${semen_grade.value}` : '',
+    `${stock_label.value}：${body_stock.value}`,
+    `精元余额：${coin_balance.value}Ṥ`,
     `身份：${identity.value}`,
     `${grade_label.value}：${grade.value}`,
     `起始日期：${start_date.value.replace(/-/g, '/')}`,
@@ -273,7 +307,7 @@ function buildSummary() {
     `性向：${orientation.value}`,
     `性癖倾向：${kinks.value.length ? kinks.value.join('、') : '未指定'}`,
     `笔触：${pen.value}`,
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 
 async function submit() {
@@ -283,13 +317,20 @@ async function submit() {
   store.data.系统.世界方向 = world.value;
   store.data.主角.性别 = gender.value;
   store.data.主角.身份 = identity.value.trim();
+  store.data.主角.精元余额 = Math.max(0, Number(coin_balance.value) || 0);
   if (gender.value === '男') {
     store.data.主角.男.阴茎等级 = grade.value as 'F' | 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
+    store.data.主角.男.精液等级 = semen_grade.value as 'F' | 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
+    store.data.主角.男.精能值 = Math.max(0, Number(body_stock.value) || 0);
   } else {
     store.data.主角.女.骚穴等级 = grade.value as 'F' | 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
     const tier = CAPACITY_TIERS[grade.value];
     store.data.主角.女.子宫仓.型号 = tier.型号;
     store.data.主角.女.子宫仓.容量 = tier.容量;
+    const stock = Math.max(0, Number(body_stock.value) || 0);
+    const balance = Math.min(stock, tier.容量);
+    store.data.主角.女.子宫仓.余额 = balance;
+    store.data.主角.女.淫纹刻度 = Math.round((balance / tier.容量) * 100);
   }
   store.data.系统.日期 = start_date.value.replace(/-/g, '/');
   store.data.系统.时间 = start_time.value;
