@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* 交易终端底色 */
+  --c-bg: #14171c;
+  /* 账本纸面 */
+  --c-surface: #1c2128;
+  /* 金属网格线 */
+  --c-border: #2b3440;
+  /* 精元金：货币本身的颜色 */
+  --c-primary: #d4a017;
+  /* 血红：淫纹与账户充盈 */
+  --c-accent: #c81e4a;
+  --c-text: #d8dee6;
+  --c-text-muted: #7c8894;
+  --c-success: #2f9e6e;
+  --c-warning: #d97706;
+  --c-warning-deep: #b91c1c;
+
+  --font-mono: ui-monospace, Consolas, 'Courier New', monospace;
+  --font-sans: 'Sarasa Gothic SC', 'Microsoft YaHei', system-ui, sans-serif;
+}

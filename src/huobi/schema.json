@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "系统": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "世界方向": {
+          "default": "现代",
+          "type": "string",
+          "enum": [
+            "律息",
+            "热值",
+            "溢流城",
+            "租界",
+            "现代"
+          ]
+        },
+        "日期": {
+          "default": "2026/09/23",
+          "type": "string",
+          "pattern": "^-?\\d+(?:\\.\\d+)?\\/-?\\d+(?:\\.\\d+)?\\/-?\\d+(?:\\.\\d+)?$"
+        },
+        "时间": {
+          "default": "09:00",
+          "type": "string",
+          "pattern": "^-?\\d+(?:\\.\\d+)?:-?\\d+(?:\\.\\d+)?$"
+        },
+        "地点": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "国家": {
+              "default": "中国",
+              "type": "string"
+            },
+            "城市": {
+              "default": "上海",
+              "type": "string"
+            },
+            "区域": {
+              "default": "上海总览",
+              "type": "string"
+            }
+          }
+        },
+        "互动玩法": {
+          "default": "日常交易求生",
+          "type": "string",
+          "enum": [
+            "日常交易求生",
+            "攻略角色",
+            "经营账户",
+            "权力博弈",
+            "探索剧情"
+          ]
+        },
+        "天数": {
+          "default": 1,
+          "type": "number"
+        },
+        "状态": {
+          "default": "日常",
+          "type": "string",
+          "enum": [
+            "日常",
+            "事件"
+          ]
+        },
+        "NSFW偏好": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "性向": {
+              "default": "异",
+              "type": "string"
+            },
+            "性癖倾向": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "笔触": {
+              "default": "感官情绪向",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "主角": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "性别": {
+          "default": "男",
+          "type": "string",
+          "enum": [
+            "男",
+            "女"
+          ]
+        },
+        "身份": {
+          "default": "普通白领",
+          "type": "string"
+        },
+        "精元余额": {
+          "default": 0,
+          "type": "number"
+        },
+        "男": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "精能值": {
+              "default": 0,
+              "type": "number"
+            },
+            "精液等级": {
+              "default": "D",
+              "type": "string",
+              "enum": [
+                "F",
+                "E",
+                "D",
+                "C",
+                "B",
+                "A",
+                "S"
+              ]
+            },
+            "今日服药量": {
+              "default": 0,
+              "type": "number"
+            },
+            "不应期": {
+              "default": "30 分钟",
+              "type": "string"
+            },
+            "勃起状态": {
+              "default": "疲软",
+              "type": "string"
+            }
+          }
+        },
+        "女": {
+          "default": {},
+          "type": "object",
+          "properties": {
+            "子宫仓": {
+              "default": {},
+              "type": "object",
+              "properties": {
+                "型号": {
+                  "default": "家用普通型",
+                  "type": "string"
+                },
+                "余额": {
+                  "default": 0,
+                  "type": "number"
+                },
+                "容量": {
+                  "default": 200,
+                  "type": "number"
+                }
+              }
+            },
+            "淫纹刻度": {
+              "default": 0,
+              "type": "number"
+            },
+            "发情状态": {
+              "default": "未发情",
+              "type": "string"
+            },
+            "小腹状态": {
+              "default": "平坦",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "常驻NPC": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "description": "NPC 姓名"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "身份": {
+            "default": "",
+            "type": "string"
+          },
+          "好感度": {
+            "default": 0,
+            "type": "number"
+          },
+          "关系": {
+            "default": "",
+            "type": "string"
+          },
+          "档案摘要": {
+            "default": "",
+            "type": "string"
+          },
+          "加入时间": {
+            "default": "",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "在场NPC": {
+      "default": {},
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "description": "NPC 姓名"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "本轮档案": {
+            "default": "",
+            "type": "string"
+          },
+          "好感度": {
+            "default": 0,
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
