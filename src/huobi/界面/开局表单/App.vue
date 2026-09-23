@@ -73,6 +73,28 @@
     </section>
 
     <section class="field">
+      <div class="field-label">起始日期</div>
+      <input v-model="start_date" class="input" type="date" />
+    </section>
+
+    <section class="field">
+      <div class="field-label">起始时间</div>
+      <div class="chips">
+        <button
+          v-for="item in TIME_PRESETS"
+          :key="item.value"
+          type="button"
+          class="chip"
+          :class="{ picked: start_time === item.value }"
+          @click="start_time = item.value"
+        >
+          {{ item.label }}
+        </button>
+      </div>
+      <input v-model="start_time" class="input" type="time" />
+    </section>
+
+    <section class="field">
       <div class="field-label">起始区域</div>
       <div class="chips">
         <button
@@ -175,6 +197,17 @@ const KINKS = ['温柔向', '支配服从', '束缚', '角色扮演', '言语刺
 const STYLES = ['含蓄克制', '露骨直白', '感官情绪向', '解剖式'];
 const GRADES = ['F', 'E', 'D', 'C', 'B', 'A', 'S'];
 
+const TIME_PRESETS = [
+  { label: '清晨 06:00', value: '06:00' },
+  { label: '早晨 08:00', value: '08:00' },
+  { label: '上午 10:00', value: '10:00' },
+  { label: '中午 12:00', value: '12:00' },
+  { label: '下午 15:00', value: '15:00' },
+  { label: '傍晚 18:00', value: '18:00' },
+  { label: '夜晚 21:00', value: '21:00' },
+  { label: '深夜 00:00', value: '00:00' },
+];
+
 const CAPACITY_TIERS: Record<string, { 型号: string; 容量: number }> = {
   F: { 型号: '家用普通型', 容量: 200 },
   E: { 型号: '家用扩展型', 容量: 500 },
@@ -200,6 +233,8 @@ const orientation = ref('异');
 const kinks = ref<string[]>([]);
 const pen = ref('感官情绪向');
 const grade = ref('D');
+const start_date = ref('2026-09-23');
+const start_time = ref('09:00');
 const submitting = ref(false);
 
 const identity_presets = computed(() => IDENTITY_PRESETS[world.value] ?? []);
@@ -231,6 +266,8 @@ function buildSummary() {
     `性别：${gender.value}`,
     `身份：${identity.value}`,
     `${grade_label.value}：${grade.value}`,
+    `起始日期：${start_date.value.replace(/-/g, '/')}`,
+    `起始时间：${start_time.value}`,
     `起始区域：${region.value}`,
     `互动玩法：${play.value}`,
     `性向：${orientation.value}`,
@@ -254,6 +291,8 @@ async function submit() {
     store.data.主角.女.子宫仓.型号 = tier.型号;
     store.data.主角.女.子宫仓.容量 = tier.容量;
   }
+  store.data.系统.日期 = start_date.value.replace(/-/g, '/');
+  store.data.系统.时间 = start_time.value;
   store.data.系统.地点.国家 = '中国';
   store.data.系统.地点.城市 = '上海';
   store.data.系统.地点.区域 = region.value;
