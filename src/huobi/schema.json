@@ -132,6 +132,19 @@
                 "S"
               ]
             },
+            "阴茎等级": {
+              "default": "D",
+              "type": "string",
+              "enum": [
+                "F",
+                "E",
+                "D",
+                "C",
+                "B",
+                "A",
+                "S"
+              ]
+            },
             "今日服药量": {
               "default": 0,
               "type": "number"
@@ -167,6 +180,19 @@
                   "type": "number"
                 }
               }
+            },
+            "骚穴等级": {
+              "default": "D",
+              "type": "string",
+              "enum": [
+                "F",
+                "E",
+                "D",
+                "C",
+                "B",
+                "A",
+                "S"
+              ]
             },
             "淫纹刻度": {
               "default": 0,

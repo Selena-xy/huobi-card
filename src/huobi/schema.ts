@@ -40,6 +40,7 @@ export const Schema = z.object({
         .object({
           精能值: z.coerce.number().prefault(0),
           精液等级: z.enum(['F', 'E', 'D', 'C', 'B', 'A', 'S']).prefault('D'),
+          阴茎等级: z.enum(['F', 'E', 'D', 'C', 'B', 'A', 'S']).prefault('D'),
           今日服药量: z.coerce.number().prefault(0),
           不应期: z.string().prefault('30 分钟'),
           勃起状态: z.string().prefault('疲软'),
@@ -54,6 +55,7 @@ export const Schema = z.object({
               容量: z.coerce.number().prefault(200),
             })
             .prefault({}),
+          骚穴等级: z.enum(['F', 'E', 'D', 'C', 'B', 'A', 'S']).prefault('D'),
           淫纹刻度: z.coerce.number().transform((value) => _.clamp(value, 0, 100)).prefault(0),
           发情状态: z.string().prefault('未发情'),
           小腹状态: z.string().prefault('平坦'),

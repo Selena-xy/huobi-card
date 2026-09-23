@@ -22,6 +22,10 @@
         <span class="readout grade">{{ store.data.主角.男.精液等级 }}</span>
       </div>
       <div class="cell">
+        <span class="label">阴茎等级</span>
+        <span class="readout grade">{{ store.data.主角.男.阴茎等级 }}</span>
+      </div>
+      <div class="cell">
         <span class="label">今日服药量</span>
         <span class="readout">{{ store.data.主角.男.今日服药量 }}</span>
       </div>
@@ -39,6 +43,10 @@
       <div class="cell">
         <span class="label">子宫仓型号</span>
         <span class="readout">{{ store.data.主角.女.子宫仓.型号 }}</span>
+      </div>
+      <div class="cell">
+        <span class="label">骚穴等级</span>
+        <span class="readout grade">{{ store.data.主角.女.骚穴等级 }}</span>
       </div>
       <div class="cell">
         <span class="label">仓内余额</span>

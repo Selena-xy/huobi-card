@@ -40,6 +40,22 @@
     </section>
 
     <section class="field">
+      <div class="field-label">{{ grade_label }}</div>
+      <div class="chips">
+        <button
+          v-for="item in GRADES"
+          :key="item"
+          type="button"
+          class="chip"
+          :class="{ picked: grade === item }"
+          @click="grade = item"
+        >
+          {{ item }}
+        </button>
+      </div>
+    </section>
+
+    <section class="field">
       <div class="field-label">身份</div>
       <div v-if="identity_presets.length" class="chips">
         <button
@@ -157,6 +173,17 @@ const REGIONS = ['上海总览', '陆家嘴金融区', '静安娱乐区', '杨�
 const ORIENTATIONS = ['异', 'BL', 'GL', '双', '灵活'];
 const KINKS = ['温柔向', '支配服从', '束缚', '角色扮演', '言语刺激', '露出', '足部', '制服', '母乳', '多P'];
 const STYLES = ['含蓄克制', '露骨直白', '感官情绪向', '解剖式'];
+const GRADES = ['F', 'E', 'D', 'C', 'B', 'A', 'S'];
+
+const CAPACITY_TIERS: Record<string, { 型号: string; 容量: number }> = {
+  F: { 型号: '家用普通型', 容量: 200 },
+  E: { 型号: '家用扩展型', 容量: 500 },
+  D: { 型号: '银行支付型', 容量: 1000 },
+  C: { 型号: '银行支付型', 容量: 2000 },
+  B: { 型号: '银行精品型', 容量: 2500 },
+  A: { 型号: '银行精品型', 容量: 3500 },
+  S: { 型号: '银行特殊型', 容量: 5000 },
+};
 
 const IDENTITY_PRESETS: Partial<Record<World, string[]>> = {
   现代: ['普通白领', '公职人员', '大学生', '自由职业', '精阀后代', '底层打工者', '企业高管'],
@@ -172,6 +199,7 @@ const play = ref<Play>('日常交易求生');
 const orientation = ref('异');
 const kinks = ref<string[]>([]);
 const pen = ref('感官情绪向');
+const grade = ref('D');
 const submitting = ref(false);
 
 const identity_presets = computed(() => IDENTITY_PRESETS[world.value] ?? []);
@@ -179,6 +207,7 @@ const identity_placeholder = computed(() =>
   identity_presets.value.length ? '也可自行填写其他身份' : '该方向暂未预设身份，请自行填写',
 );
 const ready = computed(() => Boolean(world.value && gender.value && identity.value.trim()));
+const grade_label = computed(() => (gender.value === '男' ? '阴茎等级' : '骚穴等级'));
 
 watch(world, () => {
   if (!identity_presets.value.includes(identity.value)) {
@@ -201,6 +230,7 @@ function buildSummary() {
     `世界方向：${world.value}`,
     `性别：${gender.value}`,
     `身份：${identity.value}`,
+    `${grade_label.value}：${grade.value}`,
     `起始区域：${region.value}`,
     `互动玩法：${play.value}`,
     `性向：${orientation.value}`,
@@ -216,6 +246,14 @@ async function submit() {
   store.data.系统.世界方向 = world.value;
   store.data.主角.性别 = gender.value;
   store.data.主角.身份 = identity.value.trim();
+  if (gender.value === '男') {
+    store.data.主角.男.阴茎等级 = grade.value as 'F' | 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
+  } else {
+    store.data.主角.女.骚穴等级 = grade.value as 'F' | 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
+    const tier = CAPACITY_TIERS[grade.value];
+    store.data.主角.女.子宫仓.型号 = tier.型号;
+    store.data.主角.女.子宫仓.容量 = tier.容量;
+  }
   store.data.系统.地点.国家 = '中国';
   store.data.系统.地点.城市 = '上海';
   store.data.系统.地点.区域 = region.value;
